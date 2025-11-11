@@ -1,27 +1,29 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: presync-cosign-verify
+  name: presync-verify-sbom
   namespace: gitops-demo
   annotations:
     argocd.argoproj.io/hook: PreSync
     argocd.argoproj.io/hook-delete-policy: BeforeHookCreation,HookSucceeded
 spec:
   backoffLimit: 0
-  ttlSecondsAfterFinished: 1800 # keep for 30 min
+  ttlSecondsAfterFinished: 600
   template:
     spec:
       restartPolicy: Never
       containers:
-        - name: cosign-verify
+        - name: verify-sbom
           image: ghcr.io/sigstore/cosign/cosign:v2.2.4
           args:
-            - "verify"
+            - "verify-attestation"
+            - "--type"
+            - "spdx"
             - "--certificate-oidc-issuer"
             - "https://token.actions.githubusercontent.com"
             - "--certificate-identity-regexp"
-            - "https://github.com/UnpredictablePrashant/GitOpsDemoA/.+"
-            - docker.io/prashantdey/gitops-demo-app@sha256:ad0140b138ba7d6c9363c9895626df4e67257bdb83bac6c25122159f32481e43
+            - "https://github.com/UnpredictablePrashant/GitOpsDemoA/.*"
+            - "__IMAGE_REF__"    # CI sets this just like your existing presync
           env:
             - name: COSIGN_EXPERIMENTAL
               value: "true"
