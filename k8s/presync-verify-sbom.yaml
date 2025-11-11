@@ -23,7 +23,7 @@ spec:
             - "https://token.actions.githubusercontent.com"
             - "--certificate-identity-regexp"
             - "https://github.com/UnpredictablePrashant/GitOpsDemoA/.*"
-            - "__IMAGE_REF__"    # CI sets this just like your existing presync
+            - docker.io/prashantdey/gitops-demo-app@sha256:a8e9dd24f19364ae772b14347afb9638c99a6954b243d2a4a34ac2758890af1b
           env:
             - name: COSIGN_EXPERIMENTAL
               value: "true"
