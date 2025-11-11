@@ -9,7 +9,7 @@ metadata:
     argocd.argoproj.io/hook-delete-policy: BeforeHookCreation,HookSucceeded
 spec:
   backoffLimit: 0
-  ttlSecondsAfterFinished: 1800   # keep for 30 min
+  ttlSecondsAfterFinished: 1800 # keep for 30 min
   template:
     spec:
       restartPolicy: Never
@@ -22,7 +22,7 @@ spec:
             - "https://token.actions.githubusercontent.com"
             - "--certificate-identity-regexp"
             - "https://github.com/UnpredictablePrashant/GitOpsDemoA/.+"
-            - "__IMAGE_REF__"   # CI replaces this with the exact digest
+            - docker.io/prashantdey/gitops-demo-app@sha256:ad0140b138ba7d6c9363c9895626df4e67257bdb83bac6c25122159f32481e43
           env:
             - name: COSIGN_EXPERIMENTAL
               value: "true"
